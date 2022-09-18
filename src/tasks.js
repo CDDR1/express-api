@@ -1,24 +1,24 @@
-import { uuid } from 'uuidv4';
+// import { uuid } from 'uuidv4';
 
 export const getTasks = () => {
   return [
     {
-      id: uuid(),
+      id: 1,
       description: "Study backend development",
       completed: false,
     },
     {
-      id: uuid(),
+      id: 2,
       description: "Learn Binary Search Trees",
       completed: false,
     },
     {
-      id: uuid(),
+      id: 3,
       description: "Finish MTH 390 assignments",
       completed: false,
     },
     {
-      id: uuid(),
+      id: 4,
       description: "Practice LeetCode",
       completed: false,
     },
