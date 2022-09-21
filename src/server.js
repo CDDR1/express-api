@@ -10,6 +10,10 @@ const tasksList = getTasks();
 app.use(bodyParser.json());
 
 // Routes
+app.get("/", (req, res) => {
+  return res.send("Hello From Express!");
+});
+
 app.get("/tasks", (req, res) => {
   return res.status(200).send({
     succes: "true",
@@ -63,6 +67,25 @@ app.put("/editTask/:id", (req, res) => {
     message: "error in update",
   });
 });
+
+app.delete("/deleteTask/:id", (req, res) => {
+  const id = req.params.id;
+
+  for (let i = 0; i < tasksList.length; i++) {
+    if (tasksList[i].id === id) {
+      tasksList.splice(i, 1);
+      return res.status(201).send({
+        success: "true",
+        message: "Task deleted succesfully"
+      })
+    }
+  }
+
+  return res.status(404).send({
+    success: "true",
+    message: "Error in deleting task"
+  })
+})
 
 // Initialize server
 app.listen(PORT, () => console.log(`Server initialized on port ${PORT}`));
