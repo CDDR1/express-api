@@ -30,7 +30,7 @@ app.get("/tasks", async (req, res) => {
   res.status(200).json(response.rows);
 });
 
-app.post("/addTask", (req, res) => {
+app.post("/addTask", async (req, res) => {
   if (!req.body.description) {
     return res.status(400).send({
       success: false,
@@ -38,17 +38,16 @@ app.post("/addTask", (req, res) => {
     });
   }
 
-  const newTask = {
-    id: req.body.id,
-    description: req.body.description,
-    completed: req.body.completed,
-  };
-
-  tasksList.push(newTask);
-  return res.status(201).send({
-    success: true,
-    message: `Task added successfully: ${newTask.description}`,
-  });
+  const { description, date } = req.body;
+  const response = await client.query("INSERT INTO Tasks (description, added_on) VALUES ($1, $2)", [description, date]);
+  res.json({
+    message: "Task Added Succesfully",
+    body: {
+      task: {
+        description
+      }
+    }
+  })
 });
 
 app.put("/editTask/:id", (req, res) => {
