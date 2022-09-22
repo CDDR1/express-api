@@ -81,22 +81,12 @@ app.put("/editTask/:id", (req, res) => {
   });
 });
 
-app.delete("/deleteTask/:id", (req, res) => {
-  const id = req.params.id;
+app.delete("/deleteTask/:id", async (req, res) => {
+  const { id } = req.params;
 
-  for (let i = 0; i < tasksList.length; i++) {
-    if (tasksList[i].id === id) {
-      tasksList.splice(i, 1);
-      return res.status(201).send({
-        success: "true",
-        message: "Task deleted succesfully",
-      });
-    }
-  }
-
-  return res.status(404).send({
-    success: "true",
-    message: "Error in deleting task",
+  const response = await client.query("DELETE FROM Tasks WHERE id = $1", [id]);
+  res.status(200).json({
+    message: "Task Deleted Succesfully",
   });
 });
 
