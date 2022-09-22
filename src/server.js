@@ -3,6 +3,17 @@ const app = express();
 const PORT = 3000;
 import bodyParser from "body-parser";
 import { getTasks } from "./tasks.js";
+import pg from "pg";
+const Client = pg.Client;
+
+const client = new Client({
+  host: "localhost",
+  user: "postgres",
+  password: "",
+  database: "TasksDB",
+  port: 5432,
+});
+client.connect();
 
 const tasksList = getTasks();
 
@@ -14,12 +25,9 @@ app.get("/", (req, res) => {
   return res.send("Hello From Express!");
 });
 
-app.get("/tasks", (req, res) => {
-  return res.status(200).send({
-    succes: "true",
-    message: "tasks",
-    tasks: tasksList,
-  });
+app.get("/tasks", async (req, res) => {
+  const response = await client.query("SELECT * FROM Tasks");
+  res.status(200).json(response.rows);
 });
 
 app.post("/addTask", (req, res) => {
@@ -76,16 +84,16 @@ app.delete("/deleteTask/:id", (req, res) => {
       tasksList.splice(i, 1);
       return res.status(201).send({
         success: "true",
-        message: "Task deleted succesfully"
-      })
+        message: "Task deleted succesfully",
+      });
     }
   }
 
   return res.status(404).send({
     success: "true",
-    message: "Error in deleting task"
-  })
-})
+    message: "Error in deleting task",
+  });
+});
 
 // Initialize server
 app.listen(PORT, () => console.log(`Server initialized on port ${PORT}`));
