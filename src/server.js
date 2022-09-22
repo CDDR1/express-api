@@ -27,7 +27,13 @@ app.get("/", (req, res) => {
 
 app.get("/tasks", async (req, res) => {
   const response = await client.query("SELECT * FROM Tasks");
-  res.status(200).json(response.rows);
+  return res.status(200).json(response.rows);
+});
+
+app.get("/tasks/:id", async (req, res) => {
+  const { id } = req.params;
+  const response = await client.query("SELECT * FROM Tasks WHERE id = $1;", [id]);
+  return res.status(200).json(response.rows);
 });
 
 app.post("/addTask", async (req, res) => {
@@ -44,10 +50,10 @@ app.post("/addTask", async (req, res) => {
     message: "Task Added Succesfully",
     body: {
       task: {
-        description
-      }
-    }
-  })
+        description,
+      },
+    },
+  });
 });
 
 app.put("/editTask/:id", (req, res) => {
