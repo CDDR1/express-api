@@ -56,29 +56,12 @@ app.post("/addTask", async (req, res) => {
   });
 });
 
-app.put("/editTask/:id", (req, res) => {
-  const id = req.params.id;
+app.put("/editTask/:id", async (req, res) => {
+  const { id } = req.params;
+  const { description, completed } = req.body;
 
-  const editedTask = {
-    id: id,
-    description: req.body.description,
-    completed: req.body.completed,
-  };
-
-  for (let i = 0; i < tasksList.length; i++) {
-    if (tasksList[i].id === id) {
-      tasksList[i] = editedTask;
-      return res.status(201).send({
-        success: true,
-        message: `Updated task`,
-      });
-    }
-  }
-
-  return res.status(404).send({
-    success: "true",
-    message: "error in update",
-  });
+  const response = await client.query("UPDATE Tasks SET description = $1, completed = $2 WHERE id = $3", [description, completed, id]);
+  res.status(201).send(`Task ${id} updated`);
 });
 
 app.delete("/deleteTask/:id", async (req, res) => {
