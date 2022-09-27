@@ -2,7 +2,6 @@ import express from "express";
 const app = express();
 const PORT = 3000;
 import bodyParser from "body-parser";
-import { getTasks } from "./tasks.js";
 import pg from "pg";
 const Client = pg.Client;
 
