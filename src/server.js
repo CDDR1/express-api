@@ -14,8 +14,6 @@ const client = new Client({
 });
 client.connect();
 
-const tasksList = getTasks();
-
 // Middleware
 app.use(bodyParser.json());
 
