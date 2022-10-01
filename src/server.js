@@ -4,6 +4,7 @@ import { PORT } from "./config.js";
 import bodyParser from "body-parser";
 import pg from "pg";
 const Client = pg.Client;
+import cors from "cors";
 import {
   DB_HOST,
   DB_USER,
@@ -12,13 +13,6 @@ import {
   DB_PORT
 } from "./config.js";
 
-// const client = new Client({
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "userdb",
-//   port: 5432,
-// });
 const client = new Client({
   host: DB_HOST,
   user: DB_USER,
@@ -30,6 +24,7 @@ client.connect();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // Routes
 app.get("/", (req, res) => {
@@ -85,4 +80,4 @@ app.delete("/deleteTask/:id", async (req, res) => {
 });
 
 // Initialize server
-app.listen(PORT, console.log(`Servern on port running on port ${PORT}`));
+app.listen(PORT, console.log(`Server on port running on port ${PORT}`));
