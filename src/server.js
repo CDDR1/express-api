@@ -43,12 +43,12 @@ app.get("/tasks/:id", async (req, res) => {
 });
 
 app.post("/addTask", async (req, res) => {
-  if (!req.body.description) {
-    return res.status(400).send({
-      success: false,
-      message: "A task description is required to add a task.",
-    });
-  }
+  // if (!req.body.description) {
+  //   return res.status(400).send({
+  //     success: false,
+  //     message: "A task description is required to add a task.",
+  //   });
+  // }
 
   const { description, date } = req.body;
   const response = await client.query("INSERT INTO Tasks (description, added_on) VALUES ($1, $2)", [description, date]);
