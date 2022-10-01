@@ -1,16 +1,30 @@
 import express from "express";
 const app = express();
-const PORT = 3000;
+import { PORT } from "./config.js";
 import bodyParser from "body-parser";
 import pg from "pg";
 const Client = pg.Client;
+import {
+  DB_HOST,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  DB_PORT
+} from "./config.js";
 
+// const client = new Client({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "userdb",
+//   port: 5432,
+// });
 const client = new Client({
-  host: "localhost",
-  user: "postgres",
-  password: "",
-  database: "TasksDB",
-  port: 5432,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  port: DB_PORT,
 });
 client.connect();
 
@@ -71,4 +85,4 @@ app.delete("/deleteTask/:id", async (req, res) => {
 });
 
 // Initialize server
-app.listen(PORT, () => console.log(`Server initialized on port ${PORT}`));
+app.listen(PORT, console.log(`Servern on port running on port ${PORT}`));
