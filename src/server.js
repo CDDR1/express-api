@@ -32,7 +32,7 @@ client.connect();
 
 // Middleware
 app.use(bodyParser.json());
-// app.use(cors(corsOptions));
+app.use(cors());
 
 // Routes
 app.get("/", (req, res) => {
