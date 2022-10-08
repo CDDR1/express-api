@@ -51,15 +51,8 @@ app.post("/addTask", async (req, res) => {
   }
 
   const { description, date } = req.body; 
-  const response = await client.query("INSERT INTO Tasks (description, added_on) VALUES ($1, $2)", [description, date]);
-  res.json({
-    message: "Task Added Succesfully",
-    body: {
-      task: {
-        description,
-      },
-    },
-  });
+  const response = await client.query("INSERT INTO Tasks (description, added_on) VALUES ($1, $2) RETURNING *", [description, date]);
+  res.send(response.rows[0]);
 });
 
 app.put("/editTask/:id", async (req, res) => {
@@ -76,6 +69,7 @@ app.delete("/deleteTask/:id", async (req, res) => {
   const response = await client.query("DELETE FROM Tasks WHERE id = $1", [id]);
   res.status(200).json({
     message: "Task Deleted Succesfully",
+    id
   });
 });
 
