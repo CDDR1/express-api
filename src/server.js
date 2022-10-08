@@ -1,7 +1,6 @@
 import express from "express";
 const app = express();
 import { PORT } from "./config.js";
-import bodyParser from "body-parser";
 import pg from "pg";
 const Client = pg.Client;
 import cors from "cors";
@@ -31,7 +30,8 @@ client.connect();
 // };
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Routes
@@ -51,14 +51,14 @@ app.get("/tasks/:id", async (req, res) => {
 });
 
 app.post("/addTask", async (req, res) => {
-  // if (!req.body.description) {
-  //   return res.status(400).send({
-  //     success: false,
-  //     message: "A task description is required to add a task.",
-  //   });
-  // }
+  if (!req.body.description) {
+    return res.status(400).send({
+      success: false,
+      message: "A task description is required to add a task.",
+    });
+  }
 
-  const { description, date } = req.body;
+  const { description, date } = req.body; 
   const response = await client.query("INSERT INTO Tasks (description, added_on) VALUES ($1, $2)", [description, date]);
   res.json({
     message: "Task Added Succesfully",
