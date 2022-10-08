@@ -21,14 +21,6 @@ const client = new Client({
 });
 client.connect();
 
-// cors configuration
-// const corsOptions = {
-//   "origin": "*",
-//   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   "preflightContinue": false,
-//   "optionsSuccessStatus": 204
-// };
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
