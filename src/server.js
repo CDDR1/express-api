@@ -59,8 +59,8 @@ app.put("/editTask/:id", async (req, res) => {
   const { id } = req.params;
   const { description, completed } = req.body;
 
-  const response = await client.query("UPDATE Tasks SET description = $1, completed = $2 WHERE id = $3", [description, completed, id]);
-  res.status(201).send(`Task ${id} updated`);
+  const response = await client.query("UPDATE Tasks SET description = $1, completed = $2 WHERE id = $3 RETURNING *", [description, completed, id]);
+  res.status(201).send(response.rows[0]);
 });
 
 app.delete("/deleteTask/:id", async (req, res) => {
