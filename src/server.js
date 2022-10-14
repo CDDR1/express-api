@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/tasks", async (req, res) => {
-  const response = await client.query("SELECT * FROM Tasks");
+  const response = await client.query("SELECT * FROM Tasks ORDER BY id ASC");
   return res.status(200).json(response.rows);
 });
 
